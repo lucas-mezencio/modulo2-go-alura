@@ -5,6 +5,14 @@ import (
 	"fmt"
 )
 
+type verificarConta interface {
+	Sacar(valor float64) string
+}
+
+func pagarBoleto(conta verificarConta, valorDoBoleto float64) {
+	conta.Sacar(valorDoBoleto)
+}
+
 func main() {
 	contaA := contas.ContaPoupanca{}
 	contaA.Depositar(100)
@@ -16,12 +24,4 @@ func main() {
 	contaB.Depositar(500)
 	pagarBoleto(&contaB, 150)
 	fmt.Println(contaB.GetSaldo())
-}
-
-type verificarConta interface {
-	Sacar(valor float64) string
-}
-
-func pagarBoleto(conta verificarConta, valorDoBoleto float64) {
-	conta.Sacar(valorDoBoleto)
 }
