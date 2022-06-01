@@ -14,17 +14,15 @@ func main() {
 	contaA.titular = "silvia"
 	contaA.saldo = 500
 
-	fmt.Println(contaA.saldo)
+	contaB := ContaCorrente{
+		titular: "carlos",
+		saldo:   400,
+	}
 
-	valorDoSaque := 200.
-	fmt.Println(contaA.Sacar(valorDoSaque))
-
-	fmt.Println(contaA.saldo)
-
-	fmt.Println(contaA.Depositar(500))
-
-	status, valor := contaA.Depositar(200)
-	fmt.Println(status, valor)
+	status := contaA.Transferir(300, &contaB)
+	fmt.Println(status)
+	status = contaA.Transferir(300, &contaB)
+	fmt.Println(status)
 }
 
 func (c *ContaCorrente) Sacar(valorDoSaque float64) string {
@@ -42,4 +40,14 @@ func (c *ContaCorrente) Depositar(valorDoDeposito float64) (string, float64) {
 	}
 	c.saldo += valorDoDeposito
 	return "Depósito realizado com sucesso!", c.saldo
+}
+
+// conta destino também precisa ser explicitado o uso do ponteiro
+func (c *ContaCorrente) Transferir(valorTransferencia float64, contaDestino *ContaCorrente) bool {
+	if valorTransferencia > c.saldo && valorTransferencia <= 0 {
+		return false
+	}
+	c.saldo -= valorTransferencia
+	contaDestino.Depositar(valorTransferencia)
+	return true
 }
